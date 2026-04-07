@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="static/style.css">
+    <!-- Lucide Icons (Cleaner than FontAwesome) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<div class="quiz-card">
+    <h1>Quiz App <i data-lucide="zap" size="24"></i></h1>
+    <p class="subtitle">Test your knowledge across various topics.</p>
+
+    <form method="post" action="/start_quiz">
+        
+        <div class="input-wrapper">
+            <label>Name</label>
+            <i data-lucide="user" size="18"></i>
+            <input type="text" name="username" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="input-wrapper">
+            <label>Topic</label>
+            <i data-lucide="layers" size="18"></i>
+            <select name="category" required>
+                <option value="" disabled selected>Choose a category</option>
+                <option value="GK">General Knowledge</option>
+                <option value="Math">Mathematics</option>
+                <option value="Programming">Programming</option>
+            </select>
+        </div>
+
+        <button type="submit">
+            Start Quiz 
+            <i data-lucide="arrow-right" size="18"></i>
+        </button>
+    </form>
+</div>
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="static/app.js"></script>
+</body>
+</html>

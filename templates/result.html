@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+
+<div class="result-card">
+    <h2>Quiz Result 🎯</h2>
+    <div class="result-score-grid">
+        <div class="score-item">
+            <span>Correct</span>
+            <span class="score-number">{{ score }}</span>
+        </div>
+        <div class="score-item">
+            <span>Negative</span>
+            <span class="score-number">{{ negative }}</span>
+        </div>
+        <p>📊 Percentage: {{ percentage }}%</p>
+        <p>🎯 Status: {{ status }}</p>
+        <div class="score-item final">
+            <span>Final Score</span>
+            <span class="score-number">{{ final }}</span>
+        </div>
+    </div>
+
+    <form method="post" action="/save_score">
+        <input type="hidden" name="score" value="{{ final }}">
+        <button type="submit">Save to Leaderboard</button>
+    </form>
+
+    <div class="review-section">
+    <h3 class="review-title">Detailed Review</h3>
+    
+    {% for r in results %}
+    <div class="review-card {{ 'status-correct' if r.status == 'Correct' else 'status-wrong' }}">
+        <div class="review-header">
+            <span class="q-number">Question {{ loop.index }}</span>
+            <span class="status-badge">
+                {% if r.status == 'Correct' %}
+                <i data-lucide="check-circle" size="16"></i> Correct
+                {% else %}
+                <i data-lucide="circle-x" size="16"></i> Incorrect
+                {% endif %}
+            </span>
+        </div>
+        
+        <p class="review-question"><b>{{ r.question }}</b></p>
+
+        <div class="answer-grid">
+            <div class="answer-item">
+                <small>Your Answer</small>
+                <p>{{ r.your_answer }}</p>
+            </div>
+            <div class="answer-item correct-highlight">
+                <small>Correct Answer</small>
+                <p>{{ r.correct_answer }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+    <br>
+    <a href="/"><i data-lucide="home"></i> Go Home</a>
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="static/app.js"></script>
+</body>
+</html>

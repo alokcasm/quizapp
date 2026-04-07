@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="static/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<header class="sticky-header">
+    <div class="header-inner">
+        <div class="user-info">
+            <span>Name : {{ session.get('username', 'Player') }}</span>
+            <span style="opacity: 0.6;">category: {{ session.get('category', 'General') }}</span>
+        </div>
+        <div class="timer-display" id="timer">05:00</div>
+    </div>
+</header>
+
+<main class="quiz-wrapper">
+    <form method="post" action="/result" id="quizForm">
+        
+        {% for q in questions %}
+        <div class="question-card">
+            <h2>{{ loop.index }}. {{ q.question }}</h2>
+            
+            <div class="options-list">
+                {% for opt in q.options %}
+                <label>
+                    <input type="radio" name="{{ q.id }}" value="{{ opt }}" required>
+                    <span class="option-tile">{{ opt }}</span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="submit-container">
+            <button type="submit" class="btn-submit">
+                Submit Quiz <i data-lucide="arrow-right" style="vertical-align: middle;"></i>
+            </button>
+        </div>
+    </form>
+</main>
+
+<script>
+// 5 Minutes in seconds
+let timeLeft = 300; 
+
+function startTimer() {
+    const timerElement = document.getElementById("timer");
+    
+    let countdown = setInterval(function() {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+
+        // Formatting MM:SS
+        timerElement.innerText = 
+            `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            window.onbeforeunload = null;
+            alert("Time is up! Submitting.");
+            document.getElementById("quizForm").submit();
+        }
+        timeLeft--;
+    }, 1000);
+}
+
+// Initializations
+lucide.createIcons();
+startTimer();
+
+// Block refresh
+window.onbeforeunload = function() {
+    return "Don't leave! Your progress will be lost.";
+};
+
+document.getElementById("quizForm").onsubmit = function() {
+    window.onbeforeunload = null;
+};
+</script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="static/app.js"></script>
+</body>
+</html>
